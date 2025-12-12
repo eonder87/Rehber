@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kişi Ekle</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/libphonenumber-js@1.10.49/bundle/libphonenumber-max.js"></script>
+    <style>
+        body {
+            background: transparent;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Kişi Ekle</h1>
+            <p>Rehbere yeni bir numara kaydedin</p>
+        </header>
+
+        <div class="glass-card ios-style">
+            <div class="photo-section">
+                <div class="photo-circle" onclick="document.getElementById('photo-input').click()"
+                    style="cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;">
+                    <!-- Placeholder Content (hidden if image set) -->
+                    <div id="photo-placeholder" style="display: flex; flex-direction: column; align-items: center;">
+                        <i data-lucide="camera" width="32" height="32"></i>
+                        <span style="font-size: 12px; margin-top: 4px;">Ekle</span>
+                    </div>
+                    <!-- Image Preview (hidden initially) -->
+                    <img id="photo-preview" src=""
+                        style="width: 100%; height: 100%; object-fit: cover; display: none; position: absolute; top: 0; left: 0;">
+                </div>
+                <input type="file" id="photo-input" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="form-scroll">
+
+                <!-- 1. IDENTITY SECTION -->
+                <div class="ios-group" id="container-identity">
+                    <!-- Header with Inline Add Button -->
+                    <div class="section-header"
+                        style="display: flex; justify-content: space-between; align-items: center; padding-right: 12px;">
+                        <span>Kişi Bilgileri</span>
+
+                        <!-- Add Field Trigger -->
+                        <div style="position: relative; width: 20px; height: 20px; cursor: pointer;">
+                            <i data-lucide="plus-circle" width="20" style="color: var(--success);"></i>
+                            <!-- Hidden Select -->
+                            <select id="identity-field-select" onchange="ui.addIdentityField(this)"
+                                style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;">
+                                <option value="">Seçiniz...</option>
+                                <optgroup label="Ad Bilgileri">
+                                    <option value="prefix">Ön Ek</option>
+                                    <option value="middleName">İkinci Adı</option>
+                                    <option value="suffix">Son Ek</option>
+                                    <option value="nickname">Takma Ad</option>
+                                </optgroup>
+                                <optgroup label="İş Bilgileri">
+                                    <option value="company">Şirket</option>
+                                    <option value="title">Unvan</option>
+                                    <option value="department">Bölüm</option>
+                                </optgroup>
+                                <optgroup label="Okunuş">
+                                    <option value="phoneticFirstName">Adın Okunuşu</option>
+                                    <option value="phoneticLastName">Soyadının Okunuşu</option>
+                                    <option value="phoneticCompany">Şirket Adının Okunuşu</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Static Inputs with Row IDs for targeted insertion -->
+                    <div class="input-row" id="row-firstName" data-weight="20"><input type="text" id="firstName"
+                            placeholder="Adı"></div>
+                    <div class="input-row" id="row-lastName" data-weight="40"><input type="text" id="lastName"
+                            placeholder="Soyadı">
+                    </div>
+                    <!-- Extra identity fields will be inserted here targetedly -->
+                </div>
+
+                <!-- 2. PHONES -->
+                <div class="ios-group" id="container-phones">
+                    <!-- Header with Inline Add -->
+                    <div class="section-header"
+                        style="display: flex; justify-content: space-between; align-items: center; padding-right: 12px;">
+                        <span>Telefon</span>
+                        <div style="cursor: pointer;" onclick="ui.addPhone()">
+                            <i data-lucide="plus-circle" width="20" style="color: var(--success);"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. EMAILS -->
+                <div class="ios-group" id="container-emails">
+                    <!-- Header with Inline Add -->
+                    <div class="section-header"
+                        style="display: flex; justify-content: space-between; align-items: center; padding-right: 12px;">
+                        <span>E-Posta</span>
+                        <div style="cursor: pointer;" onclick="ui.addEmail()">
+                            <i data-lucide="plus-circle" width="20" style="color: var(--success);"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. URLS -->
+                <div class="ios-group" id="container-urls">
+                    <!-- Header with Inline Add -->
+                    <div class="section-header"
+                        style="display: flex; justify-content: space-between; align-items: center; padding-right: 12px;">
+                        <span>URL</span>
+                        <div style="cursor: pointer;" onclick="ui.addUrl()">
+                            <i data-lucide="plus-circle" width="20" style="color: var(--success);"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PREVIOUSLY DEFINED SECTIONS (Address, Dates, Social) - Keeping placeholders or hidden if not requested yet, 
+                     but user said "making arrangement for the rest later". I will keep them but user simplified request. 
+                     I'll leave them as empty containers for now to be safe. -->
+                <!-- 5. ADDRESSES -->
+                <div class="ios-group" id="container-addresses">
+                    <!-- Header -->
+                    <div class="section-header"
+                        style="display: flex; justify-content: space-between; align-items: center; padding-right: 12px;">
+                        <span>Adres</span>
+                        <div style="cursor: pointer;" onclick="ui.addAddress()">
+                            <i data-lucide="plus-circle" width="20" style="color: var(--success);"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. DATES -->
+                <div class="ios-group" id="container-dates">
+                    <!-- Header -->
+                    <div class="section-header"
+                        style="display: flex; justify-content: space-between; align-items: center; padding-right: 12px;">
+                        <span>Tarih</span>
+                        <div style="cursor: pointer;" onclick="ui.addDate()">
+                            <i data-lucide="plus-circle" width="20" style="color: var(--success);"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. SOCIAL (Keeping placeholder or removing if unwanted, but user didn't ask to remove) -->
+                <div id="container-social" class="ios-group"></div>
+
+                <div class="action-section">
+                    <button id="add-btn" class="ios-btn done-btn">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/ContactService.js"></script>
+    <script src="../js/phone-utils.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/add-contact.js"></script>
+</body>
+
+</html>

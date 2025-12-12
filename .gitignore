@@ -1,0 +1,13 @@
+node_modules
+dist_build
+dist
+release
+*.log
+.DS_Store
+Thumbs.db
+# User data should generally be ignored, but if you want to ship a default db, keep db.json.
+# Usually we ignore the actual runtime data.
+data/contact_images/*
+!data/contact_images/.keep
+# Uncomment below if you want to ignore local db changes
+# data/db.json

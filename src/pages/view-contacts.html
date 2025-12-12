@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kişiler</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background: transparent;
+            min-height: 100vh;
+            display: block;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-list {
+            max-height: none;
+            overflow-y: visible;
+        }
+
+        .glass-card {
+            min-height: 80vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container"
+        style="max-width: 600px; height: 100vh; display: flex; flex-direction: column; padding-bottom: 0;">
+        <header style="flex-shrink: 0; margin-bottom: 1rem;">
+            <h1>Kişi Listesi</h1>
+            <p>Tüm rehberiniz burada</p>
+        </header>
+
+        <div class="glass-card" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0;">
+            <!-- Toolbar -->
+            <div class="list-header"
+                style="padding: 1rem; border-bottom: 1px solid var(--glass-border); background: var(--glass-bg);">
+                <div style="display:flex; align-items:center; justify-content: space-between;">
+
+                    <!-- Dropdown Title -->
+                    <div class="custom-dropdown">
+                        <div class="dropdown-trigger" onclick="toggleDropdown(event)">
+                            <h2 id="page-title" style="margin:0; font-size:1.3rem;">Kişiler</h2>
+                            <span class="count-badge-main"
+                                style="background:rgba(14, 165, 233, 0.2); color:var(--primary); padding:2px 8px; border-radius:12px; font-size:0.9rem; margin-right:4px;"
+                                id="page-count">0</span>
+                            <i data-lucide="chevron-down" width="20" style="opacity:0.7;"></i>
+                        </div>
+
+                        <div class="dropdown-menu" id="filter-menu">
+                            <div class="dropdown-item active" id="item-all" onclick="selectFilter('all')">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <i data-lucide="users" width="16"></i>
+                                    <span>Tümü</span>
+                                </div>
+                                <span class="count-badge" id="menu-count-all">0</span>
+                            </div>
+                            <div class="dropdown-item" id="item-fav" onclick="selectFilter('fav')">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <i data-lucide="star" width="16"></i>
+                                    <span>Favoriler</span>
+                                </div>
+                                <span class="count-badge" id="menu-count-fav">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="sort-toggle" class="sort-btn" title="Sıralamayı Değiştir" onclick="toggleSort()">
+                        <i data-lucide="arrow-up-down" width="16"></i>
+                    </button>
+                </div>
+                <div class="search-box">
+                    <i data-lucide="search"></i>
+                    <input type="text" id="search" placeholder="Ara...">
+                </div>
+            </div>
+
+            <!-- Content Area: List + Sidebar -->
+            <div class="contact-view-wrapper" style="height: 100%;">
+                <!-- Scrollable List -->
+                <div id="list-container" class="list-section-wrapper" style="padding: 1rem;">
+                    <ul id="contact-list" class="contact-list" style="max-height: none; padding-right: 10px;">
+                        <!-- Filtered Contacts and Headers go here -->
+                    </ul>
+                </div>
+                <!-- A-Z Sidebar -->
+                <div id="alpha-sidebar" class="alpha-sidebar">
+                    <!-- A-Z links generated via JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Detail Modal -->
+    <div id="detail-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+        <div class="app-container" style="max-width: 500px; height: 90vh; overflow-y: auto;">
+            <div class="glass-card ios-style" style="position: relative;">
+                <button onclick="closeModal()"
+                    style="position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: white; cursor: pointer;">
+                    <i data-lucide="x" width="24"></i>
+                </button>
+                <div id="detail-content">
+                    <!-- Dynamic Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeModal() {
+            document.getElementById('detail-modal').style.display = 'none';
+        }
+    </script>
+
+
+    <script src="../js/ContactService.js"></script>
+    <script src="../js/phone-utils.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/view-contacts.js"></script>
+</body>
+
+</html>

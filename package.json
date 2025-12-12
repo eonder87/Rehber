@@ -1,0 +1,35 @@
+{
+    "name": "rehber",
+    "version": "1.0.0",
+    "description": "Kişisel Rehber Uygulaması",
+    "main": "src/electron/main.js",
+    "scripts": {
+        "start": "node server/server.js",
+        "dev": "node server/server.js",
+        "app": "electron .",
+        "dist": "electron-builder"
+    },
+    "build": {
+        "appId": "com.xperian.rehber",
+        "productName": "Rehber",
+        "asar": false,
+        "win": {
+            "target": "nsis"
+        },
+        "files": [
+            "**/*",
+            "!data/db.json",
+            "!data/contact_images/*",
+            "!**/*.map"
+        ],
+        "directories": {
+            "output": "dist_build"
+        }
+    },
+    "author": "Xperian",
+    "license": "ISC",
+    "devDependencies": {
+        "electron": "^39.2.6",
+        "electron-builder": "^26.0.12"
+    }
+}

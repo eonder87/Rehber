@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rehber</title>
+    <link rel="stylesheet" href="src/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            overflow: hidden;
+            /* Prevent double scrollbars */
+            display: flex;
+            flex-direction: row;
+            /* Horizontal layout */
+            align-items: stretch;
+            justify-content: flex-start;
+        }
+
+        .main-content {
+            flex: 1;
+            height: 100vh;
+            border: none;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: rgba(30, 41, 59, 0.9);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: var(--glass-border);
+        }
+
+        .nav-link i {
+            width: 20px;
+            height: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <iframe src="src/pages/view-contacts.html" name="content-frame" id="content-frame"
+            onload="syncIframeTheme()"></iframe>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Rehber</h2>
+        </div>
+        <nav class="nav-links">
+            <a href="src/pages/view-contacts.html" target="content-frame" class="nav-link active"
+                onclick="setActive(this)">
+                <i data-lucide="users"></i> Kişiler
+            </a>
+            <a href="src/pages/add-contact.html" target="content-frame" class="nav-link" onclick="setActive(this)">
+                <i data-lucide="user-plus"></i> Kişi Ekle
+            </a>
+            <a href="src/pages/export-vcf.html" target="content-frame" class="nav-link" onclick="setActive(this)">
+                <i data-lucide="download"></i> Dışa Aktar
+            </a>
+        </nav>
+
+        <!-- Theme Toggle in Sidebar -->
+        <div style="margin-top: auto; padding-top: 2rem; display: flex; justify-content: center;">
+            <button id="sidebar-theme-toggle" class="nav-link"
+                style="width: 100%; justify-content:center; cursor: pointer;" onclick="toggleAppTheme()">
+                <i data-lucide="sun"></i> Tema Değiştir
+            </button>
+        </div>
+    </div>
+
+    <script src="src/js/theme.js"></script>
+    <script>
+        lucide.createIcons();
+
+        function setActive(element) {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function toggleAppTheme() {
+            // 1. Toggle Parent
+            const isLight = window.toggleGlobalTheme(); // defined in theme.js
+
+            // 2. Sync Iframe
+            syncIframeTheme();
+
+            // 3. Update Button
+            updateThemeButton(isLight);
+        }
+
+        function syncIframeTheme() {
+            const isLight = document.body.classList.contains('light-mode');
+            const iframe = document.getElementById('content-frame');
+            if (iframe && iframe.contentDocument && iframe.contentDocument.body) {
+                if (isLight) {
+                    iframe.contentDocument.body.classList.add('light-mode');
+                } else {
+                    iframe.contentDocument.body.classList.remove('light-mode');
+                }
+            }
+        }
+
+        function updateThemeButton(isLight) {
+            const btn = document.getElementById('sidebar-theme-toggle');
+            if (btn) {
+                btn.innerHTML = isLight
+                    ? '<i data-lucide="moon"></i> Koyu Mod'
+                    : '<i data-lucide="sun"></i> Aydınlık Mod';
+                lucide.createIcons();
+            }
+        }
+
+        // Init Button State
+        window.addEventListener('load', () => {
+            const isLight = document.body.classList.contains('light-mode');
+            const btn = document.getElementById('sidebar-theme-toggle');
+            if (btn) {
+                btn.innerHTML = isLight
+                    ? '<i data-lucide="moon"></i> Koyu Mod'
+                    : '<i data-lucide="sun"></i> Aydınlık Mod';
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
+
+</html>

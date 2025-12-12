@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dışa Aktar</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            background: transparent;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .export-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            /* Updated to 3 columns */
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .export-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        /* ... existing styles ... */
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Yedekle & Dışa Aktar</h1>
+            <p>Rehberinizi güvene alın veya paylaşın</p>
+        </header>
+
+        <div class="glass-card">
+            <div class="export-options">
+                <div class="export-card" id="export-json">
+                    <i data-lucide="file-json"></i>
+                    <h3>JSON Yedeği</h3>
+                    <p>Tam veritabanı yedeği.</p>
+                </div>
+
+                <div class="export-card">
+                    <i data-lucide="smartphone"></i>
+                    <h3>VCF (vCard)</h3>
+                    <p>Telefon ve Outlook için.</p>
+
+                    <select id="vcf-encoding" onclick="event.stopPropagation()"
+                        style="width:100%; margin: 10px 0; padding: 6px; border-radius: 6px; border: 1px solid var(--glass-border); background: var(--glass-bg); color: var(--text-main); font-size: 0.9rem;">
+                        <option value="utf-8">UTF-8 (Standart)</option>
+                        <option value="iso-8859-9">Latin-5 (Türkçe)</option>
+                        <option value="iso-8859-15">Latin-9 (ISO)</option>
+                    </select>
+
+                    <button id="export-vcf-btn" class="secondary-btn"
+                        style="width:100%; padding: 8px; margin-top: 5px; cursor: pointer;">
+                        İndir
+                    </button>
+                </div>
+
+                <div class="export-card" id="export-csv">
+                    <i data-lucide="sheet"></i>
+                    <h3>CSV (Excel)</h3>
+                    <p>Liste dökümü için.</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div style="text-align: center;">
+                <h3 style="margin-bottom: 1rem;">Geri Yükle</h3>
+                <input type="file" id="import-input" accept=".json" style="display: none;">
+                <button id="import-btn" class="primary-btn" style="width: 100%;">
+                    <i data-lucide="upload"></i> Yedekten Geri Yükle
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="../js/ContactService.js"></script>
+    <script src="../js/export.js"></script>
+</body>
+
+</html>
